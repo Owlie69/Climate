@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+Show less
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Microclimate Urban Model</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:#0f1117;color:#e0e0e0;height:100vh;overflow:hidden;display:flex;flex-direction:column;}
+#header{background:linear-gradient(90deg,#1a1a2e,#16213e);padding:10px 20px;display:flex;align-items:center;gap:16px;border-bottom:1px solid #2a2a4a;flex-shrink:0;}
+#header h1{font-size:17px;font-weight:700;color:#fff;letter-spacing:.3px;}
+#header .sub{font-size:11px;color:#7788aa;margin-top:2px;}
+.badge{background:linear-gradient(135deg,#ff6b35,#f7c59f);color:#1a1a2e;font-size:10px;font-weight:700;padding:3px 10px;border-radius:10px;margin-left:auto;}
+#main{display:flex;flex:1;overflow:hidden;}
+.panel{background:#13141f;padding:14px;overflow-y:auto;flex-shrink:0;border-color:#1e2030;}
+#left{width:238px;border-right:1px solid #1e2030;}
+#right{width:258px;border-left:1px solid #1e2030;}
+#viewport{flex:1;position:relative;background:#07080f;}
+#viewport canvas{display:block;width:100%!important;height:100%!important;}
+.slbl{font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#44455a;margin:14px 0 7px;padding-bottom:4px;border-bottom:1px solid #1e2030;}
+.slbl:first-child{margin-top:0;}
+.bgrp{display:flex;gap:4px;margin-bottom:2px;}
+.btn{flex:1;padding:7px 4px;border-radius:6px;border:1px solid #2a2a4a;background:#1a1b2e;color:#666;cursor:pointer;font-size:11px;font-weight:600;transition:all .15s;text-align:center;}
+.btn:hover{background:#252640;color:#bbb;}
+.btn.active{background:#1a2840;border-color:#2a6aaa;color:#66aaff;}
+.btn-add.active{background:#162820;border-color:#2a7a4a;color:#55cc88;}
+.btn-rem.active{background:#281616;border-color:#7a2a2a;color:#cc5555;}
+.btn-ins.active{background:#1e1a10;border-color:#7a6a2a;color:#ccaa55;}
+.matbtn{display:flex;align-items:center;gap:8px;width:100%;padding:8px 10px;margin-bottom:4px;border-radius:8px;border:1px solid #2a2a4a;background:#1a1b2e;color:#888;cursor:pointer;font-size:12px;transition:all .15s;text-align:left;}
+.matbtn:hover{background:#252640;color:#ddd;}
+.matbtn.active{border-color:#5566cc;background:#1c1e3a;color:#fff;}
+.swatch{width:18px;height:18px;border-radius:4px;flex-shrink:0;border:1px solid rgba(255,255,255,.12);}
+.mn{font-weight:600;font-size:12px;}
+.md{font-size:9px;color:#556;}
+.srow{margin-bottom:10px;}
+.slrow{display:flex;justify-content:space-between;font-size:11px;color:#778;margin-bottom:5px;}
+.slrow span:last-child{color:#aaaaff;font-weight:600;}
+input[type=range]{width:100%;-webkit-appearance:none;height:4px;border-radius:2px;background:#252640;outline:none;cursor:pointer;}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;border-radius:50%;background:#5566ff;cursor:pointer;transition:transform .1s;}
+input[type=range]::-webkit-slider-thumb:hover{transform:scale(1.2);}
+.vbtn{display:flex;align-items:center;gap:7px;width:100%;padding:7px 10px;margin-bottom:4px;border-radius:6px;border:1px solid #2a2a4a;background:#1a1b2e;color:#778;cursor:pointer;font-size:11px;font-weight:600;transition:all .15s;}
+.vbtn:hover{background:#252640;color:#ccc;}
+.vbtn.active{border-color:#5566cc;background:#1c1e3a;color:#aaaaff;}
+.vdot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+.abtn{width:100%;padding:8px;margin-bottom:4px;border-radius:6px;border:1px solid #2a2a4a;background:#1a1b2e;color:#778;cursor:pointer;font-size:11px;font-weight:600;transition:all .15s;}
+.abtn:hover{background:#252640;color:#ccc;}
+.abtn.pri{border-color:#2a3a8a;color:#8899ff;}
+.abtn.pri:hover{background:#1a2050;}
+.abtn.dan{border-color:#5a2a2a;color:#ff6666;}
+.abtn.dan:hover{background:#2a1515;}
+.mcard{background:#1a1b2e;border:1px solid #252640;border-radius:8px;padding:10px;margin-bottom:6px;}
+.mhdr{font-size:10px;color:#556;text-transform:uppercase;letter-spacing:.5px;margin-bottom:7px;}
+.mrow{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;font-size:12px;}
+.mname{color:#778;}
+.mval{font-weight:700;font-family:'Courier New',monospace;font-size:13px;}
+.mbar{background:#0f1020;border-radius:3px;height:4px;margin-top:3px;overflow:hidden;}
+.mbfill{height:100%;border-radius:3px;transition:width .4s,background .4s;}
+.cc{color:#44aaff}.cg{color:#44dd77}.cy{color:#ffcc22}.co{color:#ff8822}.cr{color:#ff3333}
+.cw{color:#22aacc}.cs{color:#888}
+.empty{text-align:center;padding:20px;color:#445;font-size:12px;}
+.empty .ic{font-size:28px;margin-bottom:8px;opacity:.4;}
+.lgit{display:flex;align-items:center;gap:6px;margin-bottom:4px;font-size:10px;color:#778;}
+.lgdot{width:10px;height:10px;border-radius:2px;flex-shrink:0;}
+#tip{position:absolute;background:rgba(15,16,30,.95);border:1px solid #3a3a6a;border-radius:6px;padding:8px 12px;font-size:11px;color:#ccc;pointer-events:none;display:none;z-index:100;backdrop-filter:blur(4px);max-width:200px;}
+#infobar{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);background:rgba(15,16,30,.85);border:1px solid #2a2a5a;border-radius:20px;padding:5px 16px;font-size:11px;color:#6677aa;backdrop-filter:blur(4px);white-space:nowrap;}
+::-webkit-scrollbar{width:5px;}
+::-webkit-scrollbar-track{background:#0f1020;}
+::-webkit-scrollbar-thumb{background:#252640;border-radius:3px;}
+</style>
+</head>
+<body>
+<div id="header">
+  <span style="font-size:22px;flex-shrink:0;">🏙</span>
+  <div>
+    <div style="font-size:17px;font-weight:700;color:#fff;">Microclimate Urban Model</div>
+    <div class="sub">3D Interactive Teaching Tool — Urban Morphology &amp; Thermal Comfort</div>
+  </div>
+  <div class="badge">EDUCATIONAL</div>
+</div>
+<div id="main">
+  <div id="left" class="panel">
+    <div class="slbl">Tool Mode</div>
+    <div class="bgrp">
+      <button class="btn btn-add active" id="btn-add" onclick="setMode('add')">＋ Add</button>
+      <button class="btn btn-rem" id="btn-rem" onclick="setMode('remove')">✕ Remove</button>
+      <button class="btn btn-ins" id="btn-ins" onclick="setMode('inspect')">🔍 Inspect</button>
+    </div>
+    <div class="slbl">Facade Material</div>
+    <button class="matbtn active" id="mat-concrete" onclick="setMat('concrete')">
+      <div class="swatch" style="background:#9a9a9a"></div>
+      <div><div class="mn">Concrete</div><div class="md">High thermal mass · Albedo 0.30</div></div>
+    </button>
+    <button class="matbtn" id="mat-wood" onclick="setMat('wood')">
+      <div class="swatch" style="background:#8B6914"></div>
+      <div><div class="mn">Wood</div><div class="md">Medium albedo 0.45 · Breathable</div></div>
+    </button>
+    <button class="matbtn" id="mat-plaster" onclick="setMat('plaster')">
+      <div class="swatch" style="background:#e8e0c8"></div>
+      <div><div class="mn">White Plaster</div><div class="md">High albedo 0.65 · Cool facade</div></div>
+    </button>
+    <div class="slbl">Building Height</div>
+    <div class="srow">
+      <div class="slrow"><span>Floors</span><span id="hval">3 floors · 9 m</span></div>
+      <input type="range" id="hslider" min="1" max="8" value="3" oninput="setH(this.value)">
+    </div>
+    <div class="slbl">Street Width</div>
+    <div class="srow">
+      <div class="slrow"><span>Width</span><span id="swval">6 m</span></div>
+      <input type="range" id="swslider" min="3" max="15" value="6" step="1" oninput="setSW(this.value)">
+    </div>
+    <div class="slbl">Visualization Mode</div>
+    <button class="vbtn active" id="view-normal" onclick="setView('normal')">
+      <div class="vdot" style="background:#aaa"></div>Normal — Materials
+    </button>
+    <button class="vbtn" id="view-heat" onclick="setView('heat')">
+      <div class="vdot" style="background:linear-gradient(90deg,#00f,#f00)"></div>Heat Map (PET)
+    </button>
+    <button class="vbtn" id="view-wind" onclick="setView('wind')">
+      <div class="vdot" style="background:#00eeff"></div>Wind Map
+    </button>
+    <button class="vbtn" id="view-cost" onclick="setView('cost')">
+      <div class="vdot" style="background:#76ff03"></div>Cost Map
+    </button>
+    <div class="slbl">Presets</div>
+    <button class="abtn pri" onclick="loadPreset('residential')">Residential Quarter</button>
+    <button class="abtn pri" onclick="loadPreset('dense')">Dense Urban Block</button>
+    <button class="abtn pri" onclick="loadPreset('mixed')">Mixed-Height District</button>
+    <button class="abtn dan" onclick="clearAll()">Clear All</button>
+  </div>
+  <div id="viewport">
+    <canvas id="c"></canvas>
+    <div id="tip"></div>
+    <div id="infobar">Click to add buildings · Scroll to zoom · Drag to orbit</div>
+  </div>
+  <div id="right" class="panel">
+    <div class="slbl">Scene Overview</div>
+    <div id="scene-metrics"><div class="empty"><div class="ic">🏗</div>Add buildings to see metrics</div></div>
+    <div class="slbl">Selected Building</div>
+    <div id="sel-metrics"><div class="empty"><div class="ic">🖱</div>Click a building to inspect</div></div>
+    <div class="slbl">Legend</div>
+    <div id="legend"></div>
+  </div>
+</div>
+<script type="importmap">
+{"imports":{"three":"https://unpkg.com/three@0.158.0/build/three.module.js","three/addons/":"https://unpkg.com/three@0.158.0/examples/jsm/"}}
+</script>
+<script type="module" src="app.js"></script>
+</body>
