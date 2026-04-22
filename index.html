@@ -1,149 +1,404 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-Show less
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Microclimate Urban Model</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
-body{font-family:'Segoe UI',system-ui,sans-serif;background:#0f1117;color:#e0e0e0;height:100vh;overflow:hidden;display:flex;flex-direction:column;}
-#header{background:linear-gradient(90deg,#1a1a2e,#16213e);padding:10px 20px;display:flex;align-items:center;gap:16px;border-bottom:1px solid #2a2a4a;flex-shrink:0;}
-#header h1{font-size:17px;font-weight:700;color:#fff;letter-spacing:.3px;}
-#header .sub{font-size:11px;color:#7788aa;margin-top:2px;}
-.badge{background:linear-gradient(135deg,#ff6b35,#f7c59f);color:#1a1a2e;font-size:10px;font-weight:700;padding:3px 10px;border-radius:10px;margin-left:auto;}
+
+body{
+  font-family:'Inter',system-ui,sans-serif;
+  background:#eef1f6;
+  color:#1e293b;
+  height:100vh;
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+  font-size:13px;
+}
+
+/* ── Header ── */
+#header{
+  background:#0f172a;
+  padding:0 20px;
+  height:50px;
+  display:flex;
+  align-items:center;
+  gap:14px;
+  flex-shrink:0;
+  border-bottom:1px solid #1e293b;
+}
+#header h1{font-size:15px;font-weight:700;color:#f8fafc;letter-spacing:.2px;}
+#header .sub{font-size:10px;color:#64748b;margin-top:1px;}
+.badge{
+  margin-left:auto;
+  background:rgba(59,130,246,.15);
+  border:1px solid rgba(59,130,246,.35);
+  color:#93c5fd;
+  font-size:10px;
+  font-weight:600;
+  padding:3px 10px;
+  border-radius:20px;
+  letter-spacing:.5px;
+}
+
+/* ── Layout ── */
 #main{display:flex;flex:1;overflow:hidden;}
-.panel{background:#13141f;padding:14px;overflow-y:auto;flex-shrink:0;border-color:#1e2030;}
-#left{width:238px;border-right:1px solid #1e2030;}
-#right{width:258px;border-left:1px solid #1e2030;}
-#viewport{flex:1;position:relative;background:#07080f;}
-#viewport canvas{display:block;width:100%!important;height:100%!important;}
-.slbl{font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#44455a;margin:14px 0 7px;padding-bottom:4px;border-bottom:1px solid #1e2030;}
+.panel{
+  background:#fff;
+  padding:14px;
+  overflow-y:auto;
+  flex-shrink:0;
+  border-color:#e2e8f0;
+}
+#left{width:230px;border-right:1px solid #e2e8f0;}
+#right{width:252px;border-left:1px solid #e2e8f0;}
+#viewport{flex:1;position:relative;background:#c8d8ec;}
+#viewport canvas{display:block;}
+
+/* ── Section labels ── */
+.slbl{
+  font-size:9px;
+  font-weight:700;
+  letter-spacing:1.4px;
+  text-transform:uppercase;
+  color:#94a3b8;
+  margin:16px 0 8px;
+  padding-bottom:5px;
+  border-bottom:1px solid #f1f5f9;
+}
 .slbl:first-child{margin-top:0;}
+
+/* ── Tool mode buttons ── */
 .bgrp{display:flex;gap:4px;margin-bottom:2px;}
-.btn{flex:1;padding:7px 4px;border-radius:6px;border:1px solid #2a2a4a;background:#1a1b2e;color:#666;cursor:pointer;font-size:11px;font-weight:600;transition:all .15s;text-align:center;}
-.btn:hover{background:#252640;color:#bbb;}
-.btn.active{background:#1a2840;border-color:#2a6aaa;color:#66aaff;}
-.btn-add.active{background:#162820;border-color:#2a7a4a;color:#55cc88;}
-.btn-rem.active{background:#281616;border-color:#7a2a2a;color:#cc5555;}
-.btn-ins.active{background:#1e1a10;border-color:#7a6a2a;color:#ccaa55;}
-.matbtn{display:flex;align-items:center;gap:8px;width:100%;padding:8px 10px;margin-bottom:4px;border-radius:8px;border:1px solid #2a2a4a;background:#1a1b2e;color:#888;cursor:pointer;font-size:12px;transition:all .15s;text-align:left;}
-.matbtn:hover{background:#252640;color:#ddd;}
-.matbtn.active{border-color:#5566cc;background:#1c1e3a;color:#fff;}
-.swatch{width:18px;height:18px;border-radius:4px;flex-shrink:0;border:1px solid rgba(255,255,255,.12);}
-.mn{font-weight:600;font-size:12px;}
-.md{font-size:9px;color:#556;}
+.btn{
+  flex:1;
+  padding:7px 4px;
+  border-radius:6px;
+  border:1px solid #e2e8f0;
+  background:#f8fafc;
+  color:#94a3b8;
+  cursor:pointer;
+  font-size:11px;
+  font-weight:600;
+  font-family:'Inter',sans-serif;
+  transition:all .15s;
+  text-align:center;
+}
+.btn:hover{background:#f1f5f9;color:#475569;}
+.btn.active{background:#eff6ff;border-color:#93c5fd;color:#2563eb;}
+.btn-rem.active{background:#fef2f2;border-color:#fca5a5;color:#dc2626;}
+.btn-ins.active{background:#f0fdf4;border-color:#86efac;color:#16a34a;}
+
+/* ── Material buttons ── */
+.matbtn{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  width:100%;
+  padding:9px 11px;
+  margin-bottom:4px;
+  border-radius:8px;
+  border:1px solid #e2e8f0;
+  background:#f8fafc;
+  color:#64748b;
+  cursor:pointer;
+  font-size:12px;
+  font-family:'Inter',sans-serif;
+  transition:all .15s;
+  text-align:left;
+}
+.matbtn:hover{background:#f1f5f9;color:#334155;}
+.matbtn.active{border-color:#93c5fd;background:#eff6ff;color:#1e40af;}
+.swatch{width:16px;height:16px;border-radius:4px;flex-shrink:0;border:1px solid rgba(0,0,0,.08);}
+.mn{font-weight:600;font-size:12px;color:inherit;}
+.md{font-size:9px;color:#94a3b8;margin-top:1px;}
+
+/* ── Sliders ── */
 .srow{margin-bottom:10px;}
-.slrow{display:flex;justify-content:space-between;font-size:11px;color:#778;margin-bottom:5px;}
-.slrow span:last-child{color:#aaaaff;font-weight:600;}
-input[type=range]{width:100%;-webkit-appearance:none;height:4px;border-radius:2px;background:#252640;outline:none;cursor:pointer;}
-input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;border-radius:50%;background:#5566ff;cursor:pointer;transition:transform .1s;}
+.slrow{display:flex;justify-content:space-between;font-size:11px;color:#94a3b8;margin-bottom:6px;}
+.slrow span:last-child{color:#2563eb;font-weight:600;font-family:'JetBrains Mono',monospace;}
+input[type=range]{
+  width:100%;
+  -webkit-appearance:none;
+  height:3px;
+  border-radius:2px;
+  background:#e2e8f0;
+  outline:none;
+  cursor:pointer;
+}
+input[type=range]::-webkit-slider-thumb{
+  -webkit-appearance:none;
+  width:14px;height:14px;
+  border-radius:50%;
+  background:#2563eb;
+  cursor:pointer;
+  border:2px solid #fff;
+  box-shadow:0 0 0 1px #93c5fd;
+  transition:transform .1s;
+}
 input[type=range]::-webkit-slider-thumb:hover{transform:scale(1.2);}
-.vbtn{display:flex;align-items:center;gap:7px;width:100%;padding:7px 10px;margin-bottom:4px;border-radius:6px;border:1px solid #2a2a4a;background:#1a1b2e;color:#778;cursor:pointer;font-size:11px;font-weight:600;transition:all .15s;}
-.vbtn:hover{background:#252640;color:#ccc;}
-.vbtn.active{border-color:#5566cc;background:#1c1e3a;color:#aaaaff;}
-.vdot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
-.abtn{width:100%;padding:8px;margin-bottom:4px;border-radius:6px;border:1px solid #2a2a4a;background:#1a1b2e;color:#778;cursor:pointer;font-size:11px;font-weight:600;transition:all .15s;}
-.abtn:hover{background:#252640;color:#ccc;}
-.abtn.pri{border-color:#2a3a8a;color:#8899ff;}
-.abtn.pri:hover{background:#1a2050;}
-.abtn.dan{border-color:#5a2a2a;color:#ff6666;}
-.abtn.dan:hover{background:#2a1515;}
-.mcard{background:#1a1b2e;border:1px solid #252640;border-radius:8px;padding:10px;margin-bottom:6px;}
-.mhdr{font-size:10px;color:#556;text-transform:uppercase;letter-spacing:.5px;margin-bottom:7px;}
-.mrow{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;font-size:12px;}
-.mname{color:#778;}
-.mval{font-weight:700;font-family:'Courier New',monospace;font-size:13px;}
-.mbar{background:#0f1020;border-radius:3px;height:4px;margin-top:3px;overflow:hidden;}
-.mbfill{height:100%;border-radius:3px;transition:width .4s,background .4s;}
-.cc{color:#44aaff}.cg{color:#44dd77}.cy{color:#ffcc22}.co{color:#ff8822}.cr{color:#ff3333}
-.cw{color:#22aacc}.cs{color:#888}
-.empty{text-align:center;padding:20px;color:#445;font-size:12px;}
-.empty .ic{font-size:28px;margin-bottom:8px;opacity:.4;}
-.lgit{display:flex;align-items:center;gap:6px;margin-bottom:4px;font-size:10px;color:#778;}
-.lgdot{width:10px;height:10px;border-radius:2px;flex-shrink:0;}
-#tip{position:absolute;background:rgba(15,16,30,.95);border:1px solid #3a3a6a;border-radius:6px;padding:8px 12px;font-size:11px;color:#ccc;pointer-events:none;display:none;z-index:100;backdrop-filter:blur(4px);max-width:200px;}
-#infobar{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);background:rgba(15,16,30,.85);border:1px solid #2a2a5a;border-radius:20px;padding:5px 16px;font-size:11px;color:#6677aa;backdrop-filter:blur(4px);white-space:nowrap;}
-::-webkit-scrollbar{width:5px;}
-::-webkit-scrollbar-track{background:#0f1020;}
-::-webkit-scrollbar-thumb{background:#252640;border-radius:3px;}
+
+/* ── View mode buttons ── */
+.vbtn{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  width:100%;
+  padding:8px 11px;
+  margin-bottom:4px;
+  border-radius:8px;
+  border:1px solid #e2e8f0;
+  background:#f8fafc;
+  color:#64748b;
+  cursor:pointer;
+  font-size:11px;
+  font-weight:500;
+  font-family:'Inter',sans-serif;
+  transition:all .15s;
+}
+.vbtn:hover{background:#f1f5f9;color:#334155;}
+.vbtn.active{border-color:#93c5fd;background:#eff6ff;color:#2563eb;}
+.vdot{width:9px;height:9px;border-radius:50%;flex-shrink:0;}
+
+/* ── Preset / action buttons ── */
+.abtn{
+  width:100%;
+  padding:8px 12px;
+  margin-bottom:4px;
+  border-radius:8px;
+  border:1px solid #e2e8f0;
+  background:#f8fafc;
+  color:#475569;
+  cursor:pointer;
+  font-size:11px;
+  font-weight:500;
+  font-family:'Inter',sans-serif;
+  transition:all .15s;
+  text-align:left;
+}
+.abtn:hover{background:#f1f5f9;color:#1e293b;border-color:#cbd5e1;}
+.abtn.pri{border-color:#bfdbfe;color:#1d4ed8;background:#eff6ff;}
+.abtn.pri:hover{background:#dbeafe;}
+.abtn.dan{border-color:#fecaca;color:#dc2626;background:#fff5f5;}
+.abtn.dan:hover{background:#fee2e2;}
+
+/* ── Metric cards ── */
+.mcard{
+  background:#f8fafc;
+  border:1px solid #f1f5f9;
+  border-radius:10px;
+  padding:11px 12px;
+  margin-bottom:8px;
+}
+.mhdr{
+  font-size:9px;
+  font-weight:700;
+  color:#94a3b8;
+  text-transform:uppercase;
+  letter-spacing:1px;
+  margin-bottom:9px;
+}
+.mrow{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:5px;
+  font-size:12px;
+}
+.mname{color:#64748b;font-weight:500;}
+.mval{
+  font-weight:600;
+  font-family:'JetBrains Mono',monospace;
+  font-size:13px;
+}
+.mbar{background:#e2e8f0;border-radius:3px;height:3px;margin-top:4px;overflow:hidden;}
+.mbfill{height:100%;border-radius:3px;transition:width .5s,background .5s;}
+
+/* Value color classes */
+.cc{color:#0ea5e9}
+.cg{color:#10b981}
+.cy{color:#f59e0b}
+.co{color:#f97316}
+.cr{color:#ef4444}
+.cw{color:#2563eb}
+.cs{color:#94a3b8}
+
+/* ── Empty states ── */
+.empty{text-align:center;padding:24px 16px;color:#cbd5e1;}
+.empty .ic{font-size:26px;margin-bottom:8px;opacity:.5;display:block;}
+
+/* ── Legend ── */
+.lgit{
+  display:flex;
+  align-items:center;
+  gap:7px;
+  margin-bottom:5px;
+  font-size:11px;
+  color:#64748b;
+}
+.lgdot{width:10px;height:10px;border-radius:3px;flex-shrink:0;}
+.lgbar{
+  height:8px;
+  border-radius:4px;
+  margin:5px 0;
+}
+
+/* ── Tooltip ── */
+#tip{
+  position:absolute;
+  background:rgba(15,23,42,.93);
+  border:1px solid rgba(148,163,184,.2);
+  border-radius:8px;
+  padding:9px 13px;
+  font-size:11px;
+  color:#e2e8f0;
+  pointer-events:none;
+  display:none;
+  z-index:100;
+  backdrop-filter:blur(8px);
+  max-width:210px;
+  line-height:1.7;
+  box-shadow:0 4px 20px rgba(0,0,0,.25);
+}
+#tip b{color:#f8fafc;font-weight:600;}
+
+/* ── Info bar ── */
+#infobar{
+  position:absolute;
+  bottom:12px;
+  left:50%;
+  transform:translateX(-50%);
+  background:rgba(15,23,42,.75);
+  border:1px solid rgba(148,163,184,.15);
+  border-radius:20px;
+  padding:5px 16px;
+  font-size:10px;
+  color:#94a3b8;
+  backdrop-filter:blur(8px);
+  white-space:nowrap;
+  letter-spacing:.3px;
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar{width:4px;}
+::-webkit-scrollbar-track{background:#f8fafc;}
+::-webkit-scrollbar-thumb{background:#e2e8f0;border-radius:2px;}
+::-webkit-scrollbar-thumb:hover{background:#cbd5e1;}
+
+/* ── Divider ── */
+.div{height:1px;background:#f1f5f9;margin:10px 0;}
 </style>
 </head>
 <body>
+
 <div id="header">
-  <span style="font-size:22px;flex-shrink:0;">🏙</span>
+  <svg width="26" height="26" viewBox="0 0 26 26" fill="none">
+    <rect x="2" y="10" width="6" height="14" rx="1" fill="#3b82f6"/>
+    <rect x="10" y="6" width="6" height="18" rx="1" fill="#60a5fa"/>
+    <rect x="18" y="13" width="6" height="11" rx="1" fill="#93c5fd"/>
+  </svg>
   <div>
-    <div style="font-size:17px;font-weight:700;color:#fff;">Microclimate Urban Model</div>
+    <div id="header h1" style="font-size:15px;font-weight:700;color:#f8fafc;letter-spacing:.2px;">Microclimate Urban Model</div>
     <div class="sub">3D Interactive Teaching Tool — Urban Morphology &amp; Thermal Comfort</div>
   </div>
   <div class="badge">EDUCATIONAL</div>
 </div>
+
 <div id="main">
+
+  <!-- LEFT PANEL -->
   <div id="left" class="panel">
+
     <div class="slbl">Tool Mode</div>
     <div class="bgrp">
-      <button class="btn btn-add active" id="btn-add" onclick="setMode('add')">＋ Add</button>
+      <button class="btn btn-add active" id="btn-add" onclick="setMode('add')">+ Add</button>
       <button class="btn btn-rem" id="btn-rem" onclick="setMode('remove')">✕ Remove</button>
-      <button class="btn btn-ins" id="btn-ins" onclick="setMode('inspect')">🔍 Inspect</button>
+      <button class="btn btn-ins" id="btn-ins" onclick="setMode('inspect')">⊙ Inspect</button>
     </div>
+
     <div class="slbl">Facade Material</div>
     <button class="matbtn active" id="mat-concrete" onclick="setMat('concrete')">
-      <div class="swatch" style="background:#9a9a9a"></div>
+      <div class="swatch" style="background:#9ca3af"></div>
       <div><div class="mn">Concrete</div><div class="md">High thermal mass · Albedo 0.30</div></div>
     </button>
     <button class="matbtn" id="mat-wood" onclick="setMat('wood')">
-      <div class="swatch" style="background:#8B6914"></div>
-      <div><div class="mn">Wood</div><div class="md">Medium albedo 0.45 · Breathable</div></div>
+      <div class="swatch" style="background:#92400e"></div>
+      <div><div class="mn">Wood</div><div class="md">Breathable facade · Albedo 0.45</div></div>
     </button>
     <button class="matbtn" id="mat-plaster" onclick="setMat('plaster')">
-      <div class="swatch" style="background:#e8e0c8"></div>
-      <div><div class="mn">White Plaster</div><div class="md">High albedo 0.65 · Cool facade</div></div>
+      <div class="swatch" style="background:#e5e7eb;border-color:#d1d5db!important"></div>
+      <div><div class="mn">White Plaster</div><div class="md">High albedo 0.65 · Cool</div></div>
     </button>
+
     <div class="slbl">Building Height</div>
     <div class="srow">
       <div class="slrow"><span>Floors</span><span id="hval">3 floors · 9 m</span></div>
       <input type="range" id="hslider" min="1" max="8" value="3" oninput="setH(this.value)">
     </div>
+
     <div class="slbl">Street Width</div>
     <div class="srow">
       <div class="slrow"><span>Width</span><span id="swval">6 m</span></div>
       <input type="range" id="swslider" min="3" max="15" value="6" step="1" oninput="setSW(this.value)">
     </div>
+
     <div class="slbl">Visualization Mode</div>
     <button class="vbtn active" id="view-normal" onclick="setView('normal')">
-      <div class="vdot" style="background:#aaa"></div>Normal — Materials
+      <div class="vdot" style="background:#94a3b8"></div>Normal — Materials
     </button>
     <button class="vbtn" id="view-heat" onclick="setView('heat')">
-      <div class="vdot" style="background:linear-gradient(90deg,#00f,#f00)"></div>Heat Map (PET)
+      <div class="vdot" style="background:linear-gradient(90deg,#3b82f6,#ef4444)"></div>Heat Map (PET)
     </button>
     <button class="vbtn" id="view-wind" onclick="setView('wind')">
-      <div class="vdot" style="background:#00eeff"></div>Wind Map
+      <div class="vdot" style="background:#0ea5e9"></div>Wind Map
     </button>
     <button class="vbtn" id="view-cost" onclick="setView('cost')">
-      <div class="vdot" style="background:#76ff03"></div>Cost Map
+      <div class="vdot" style="background:#10b981"></div>Cost Map
     </button>
+
     <div class="slbl">Presets</div>
     <button class="abtn pri" onclick="loadPreset('residential')">Residential Quarter</button>
     <button class="abtn pri" onclick="loadPreset('dense')">Dense Urban Block</button>
     <button class="abtn pri" onclick="loadPreset('mixed')">Mixed-Height District</button>
-    <button class="abtn dan" onclick="clearAll()">Clear All</button>
+    <div style="margin-top:4px">
+      <button class="abtn dan" onclick="clearAll()">Clear All</button>
+    </div>
+
   </div>
+
+  <!-- VIEWPORT -->
   <div id="viewport">
     <canvas id="c"></canvas>
     <div id="tip"></div>
-    <div id="infobar">Click to add buildings · Scroll to zoom · Drag to orbit</div>
+    <div id="infobar">Click grid to add buildings &nbsp;·&nbsp; Scroll to zoom &nbsp;·&nbsp; Drag to orbit</div>
   </div>
+
+  <!-- RIGHT PANEL -->
   <div id="right" class="panel">
+
     <div class="slbl">Scene Overview</div>
-    <div id="scene-metrics"><div class="empty"><div class="ic">🏗</div>Add buildings to see metrics</div></div>
+    <div id="scene-metrics">
+      <div class="empty"><span class="ic">🏗</span>Add buildings to see metrics</div>
+    </div>
+
     <div class="slbl">Selected Building</div>
-    <div id="sel-metrics"><div class="empty"><div class="ic">🖱</div>Click a building to inspect</div></div>
+    <div id="sel-metrics">
+      <div class="empty"><span class="ic">⊙</span>Use Inspect mode and click a building</div>
+    </div>
+
     <div class="slbl">Legend</div>
     <div id="legend"></div>
+
   </div>
 </div>
+
 <script type="importmap">
 {"imports":{"three":"https://unpkg.com/three@0.158.0/build/three.module.js","three/addons/":"https://unpkg.com/three@0.158.0/examples/jsm/"}}
 </script>
 <script type="module" src="app.js"></script>
 </body>
+</html>

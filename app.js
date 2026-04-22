@@ -43,8 +43,8 @@ renderer.toneMapping = THREE.ACESFilmicToneMapping;
 renderer.toneMappingExposure = 1.1;
 
 const scene = new THREE.Scene();
-scene.background = new THREE.Color(0x07080f);
-scene.fog = new THREE.FogExp2(0x07080f, 0.006);
+scene.background = new THREE.Color(0xc8d8ec);
+scene.fog = new THREE.FogExp2(0xc8d8ec, 0.004);
 
 const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 400);
 camera.position.set(55, 65, 85);
@@ -58,9 +58,9 @@ controls.minDistance = 12;
 controls.maxDistance = 160;
 
 // ── Lighting ───────────────────────────────────────────────────────────────
-scene.add(new THREE.AmbientLight(0x334466, 1.0));
+scene.add(new THREE.AmbientLight(0xd0e0f0, 1.4));
 
-const sun = new THREE.DirectionalLight(0xfff5e0, 2.4);
+const sun = new THREE.DirectionalLight(0xfff8ee, 2.0);
 sun.position.set(45, 90, 35);
 sun.castShadow = true;
 sun.shadow.mapSize.set(2048, 2048);
@@ -71,30 +71,30 @@ sun.shadow.camera.right = sun.shadow.camera.top = 90;
 sun.shadow.bias = -0.0005;
 scene.add(sun);
 
-const fill = new THREE.DirectionalLight(0x4466bb, 0.5);
+const fill = new THREE.DirectionalLight(0x88aacc, 0.6);
 fill.position.set(-35, 25, -45);
 scene.add(fill);
 
 // ── Ground ─────────────────────────────────────────────────────────────────
 const ground = new THREE.Mesh(
   new THREE.PlaneGeometry(250, 250),
-  new THREE.MeshLambertMaterial({ color: 0x0d0f1a })
+  new THREE.MeshLambertMaterial({ color: 0x7ea87e })
 );
 ground.rotation.x = -Math.PI / 2;
 ground.receiveShadow = true;
 scene.add(ground);
 
-// Street surface (slightly lighter than ground)
+// Street surface
 const streets = new THREE.Mesh(
   new THREE.PlaneGeometry(200, 200),
-  new THREE.MeshLambertMaterial({ color: 0x12141f })
+  new THREE.MeshLambertMaterial({ color: 0xb0b8c4 })
 );
 streets.rotation.x = -Math.PI / 2;
 streets.position.y = 0.01;
 streets.receiveShadow = true;
 scene.add(streets);
 
-scene.add(new THREE.GridHelper(160, 20, 0x1a2040, 0x12182e));
+scene.add(new THREE.GridHelper(160, 20, 0x8899aa, 0x99aabb));
 
 // ── Hit plane (raycasting onto ground) ────────────────────────────────────
 const hitPlane = new THREE.Mesh(
@@ -699,33 +699,39 @@ function updateLegend() {
       <div class="lgit"><div class="lgdot" style="background:#e8e0c8"></div>White Plaster – High albedo</div>`;
   } else if (viewMode === 'heat') {
     el.innerHTML = `
-      <div style="font-size:10px;color:#556;margin-bottom:5px">PET – Physiological Equiv. Temp</div>
-      <div style="background:linear-gradient(90deg,#0055ff,#00ff88,#ffcc00,#ff3300);height:7px;border-radius:4px;margin-bottom:4px"></div>
-      <div style="display:flex;justify-content:space-between;font-size:9px;color:#445"><span>18°C Cool</span><span>35°C Hot</span><span>50°C+</span></div>`;
+      <div style="font-size:10px;color:#94a3b8;margin-bottom:5px">PET – Physiological Equiv. Temp</div>
+      <div style="background:linear-gradient(90deg,#3b82f6,#10b981,#f59e0b,#ef4444);height:7px;border-radius:4px;margin-bottom:4px"></div>
+      <div style="display:flex;justify-content:space-between;font-size:9px;color:#94a3b8"><span>18°C Cool</span><span>35°C Hot</span><span>50°C+</span></div>`;
   } else if (viewMode === 'wind') {
     el.innerHTML = `
-      <div style="font-size:10px;color:#556;margin-bottom:5px">Wind Speed (m/s)</div>
-      <div style="background:linear-gradient(90deg,#000088,#0044ff,#00ccff);height:7px;border-radius:4px;margin-bottom:4px"></div>
-      <div style="display:flex;justify-content:space-between;font-size:9px;color:#445"><span>0 Stagnant</span><span>2 Moderate</span><span>4+ Breezy</span></div>`;
+      <div style="font-size:10px;color:#94a3b8;margin-bottom:5px">Wind Speed (m/s)</div>
+      <div style="background:linear-gradient(90deg,#1e3a8a,#3b82f6,#7dd3fc);height:7px;border-radius:4px;margin-bottom:4px"></div>
+      <div style="display:flex;justify-content:space-between;font-size:9px;color:#94a3b8"><span>0 Stagnant</span><span>2 Moderate</span><span>4+ Breezy</span></div>`;
   } else if (viewMode === 'cost') {
     el.innerHTML = `
-      <div style="font-size:10px;color:#556;margin-bottom:5px">Construction Cost (€k)</div>
-      <div style="background:linear-gradient(90deg,#00aa44,#ffcc00,#ff2200);height:7px;border-radius:4px;margin-bottom:4px"></div>
-      <div style="display:flex;justify-content:space-between;font-size:9px;color:#445"><span>€200k</span><span>€1M</span><span>€2M+</span></div>`;
+      <div style="font-size:10px;color:#94a3b8;margin-bottom:5px">Construction Cost (€k)</div>
+      <div style="background:linear-gradient(90deg,#10b981,#f59e0b,#ef4444);height:7px;border-radius:4px;margin-bottom:4px"></div>
+      <div style="display:flex;justify-content:space-between;font-size:9px;color:#94a3b8"><span>€200k</span><span>€1M</span><span>€2M+</span></div>`;
   }
 }
 
 // ── Resize + render loop ───────────────────────────────────────────────────
 function resize() {
   const vp = document.getElementById('viewport');
-  const w = vp.clientWidth, h = vp.clientHeight;
+  const w = vp.clientWidth;
+  const h = vp.clientHeight;
+  if (w === 0 || h === 0) return;
   renderer.setSize(w, h);
   camera.aspect = w / h;
   camera.updateProjectionMatrix();
 }
 
 window.addEventListener('resize', resize);
-resize();
+// Call resize several times to catch correct layout dimensions
+requestAnimationFrame(() => { resize(); requestAnimationFrame(resize); });
+setTimeout(resize, 0);
+setTimeout(resize, 150);
+window.addEventListener('load', resize);
 
 (function animate() {
   requestAnimationFrame(animate);
